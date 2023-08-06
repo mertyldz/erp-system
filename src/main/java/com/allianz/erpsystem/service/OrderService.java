@@ -129,12 +129,6 @@ public class OrderService {
                     throw new StockException();
                 } else {
                     orderEntity.setOrderStatus(OrderStatus.APPROVED.getName());
-                    CreateBillDTO createBillDTO = new CreateBillDTO(); // Requires order uuid & customer uuid.
-                    createBillDTO.setOrderUUID(uuid);
-                    createBillDTO.setCustomerUUID(orderEntity.getCustomerEntity().getUuid());
-
-                    orderRepository.save(orderEntity);
-                    billService.create(createBillDTO);
                 }
             }
         }
@@ -146,6 +140,12 @@ public class OrderService {
             }
 
             // Generate bill.
+            CreateBillDTO createBillDTO = new CreateBillDTO(); // Requires order uuid & customer uuid.
+            createBillDTO.setOrderUUID(uuid);
+            createBillDTO.setCustomerUUID(orderEntity.getCustomerEntity().getUuid());
+
+            orderRepository.save(orderEntity);
+            billService.create(createBillDTO);
 
         }
     }
